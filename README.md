@@ -107,5 +107,10 @@ w=3.8
 w=4.0
 
 
+Here's GIF of the clusters.
+
+![ScreenShot](/clusters-40X40.gif)
+
+
 
 
