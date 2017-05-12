@@ -5,11 +5,24 @@ simulation:1
 Lattice size: 40 X 40 
 
 Other parameters for simulation:-
+/* ALL THE PARAMETERS HERE */
+#define VER		    40	     //  width of lattice matrix. for ex 6*6 lattice
+#define latt_pc     1		 // percentage of lattice points where atom exist
+#define upspin_pc   0.5		 // percentage of upspin in lattice
+#define w           1        // omega(w) for bimmodal distribution of Bi in eq 6.1    
+#define N			VER*VER    // width of edge matrix. for ex 36*36 edges
+#define V			N+2       // source + sink
 
+//delta is multipling factor with Bmat
+#define del_beg     0
+#define del_end     40 // actually 4.0
+#define del_inc     2 // actually 0.2
 
 result of simulation 1:
 red  stands for upspin
 blue stands for downspin
+
+
 ![ScreenShot](/cluster-40-1-0.bmp)
 w=0.0
 
