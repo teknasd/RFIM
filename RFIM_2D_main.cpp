@@ -7,15 +7,21 @@
 
 //#define _HAS_ITERATOR_DEBUGGING 0
 
+#include <fstream>
 #include "Headers.h"
 #include "Parameters.h"
 #include "Clustering.h"
 #include "PushRelabel.h"
 #include "LatticeStuff.h"
 
+
 using namespace std;
 
+
+ofstream f;
 int main(void) {
+	f.open("log.dat",ios::app);
+
 	//Mat image(VER, VER, CV_8UC3);
 
 
@@ -25,6 +31,7 @@ int main(void) {
 	
 	for (l = 0; l < iter; l++)
 	{
+		f << "iter: " << l <<endl;
 		cout << "\n\n*****ITER:  " << l << "****\n\n";
 			
 		
@@ -58,6 +65,7 @@ int main(void) {
 
 		for (int del = del_beg; del <= del_end; del += del_inc)
 		{
+			f << "del: " << del << endl;
 			//open 
 			cout << "\ndEL: " << float(del) / 10 << tab;
 
@@ -102,6 +110,7 @@ int main(void) {
 			/* ====================== COUNT CLUSTERS ================== */
 			clusters = no_of_clusters(clusstats0, clusstats1);
 			cout << "clusters: " << clusters << "\n\n";
+			f << "clusters: " << clusters << endl;
 
 			tdiff[l] = t2 - t1;
 			sum += tdiff[l];
@@ -157,6 +166,7 @@ int main(void) {
 		sqlat1.clear();
 		clusstats0.clear();
 		clusstats1.clear();
+		f << endl;
 
 	}
 	cout << "\n\n\nAVERAGE TIME for " << VER << " ver : " << sum / iter << endl;
@@ -167,7 +177,7 @@ int main(void) {
 		cout << "-" << tdiff[l];
 	}
 
-
-	system("PAUSE");
+	f.close();
+	//system("PAUSE");
 	return 0;
 }
