@@ -1,8 +1,8 @@
 #pragma once
 
 //* DEFINE ALL THE PARAMETERS HERE */
-#define iter		10
-#define VER		    10		 //  width of lattice matrix. for ex 6*6 lattice
+#define iter		1
+#define VER		    64		 //  width of lattice matrix. for ex 6*6 lattice
 #define DIM         2		// dimension of lattice // here 2; square lattice
 #define latt_pc     1		 // percentage of lattice points where atom exist
 #define upspin_pc   0.5		 // percentage of upspin in lattice
