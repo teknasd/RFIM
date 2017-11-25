@@ -16,7 +16,10 @@
 #include "Clustering.h"
 #include "PushRelabel.h"
 #include "LatticeStuff.h"
-
+#ifdef  unix
+	#include <pthread.h>
+#endif
+#define NUM_THREADS  1
 
 using namespace std;
 
@@ -29,13 +32,16 @@ int randomizer(void){
     uniform_int_distribution<int> distr(0,5000);
     return distr(generator);
 }
-int blowjob(void) {
-	string file_name = "log.dat";
-	file_name + to_string(randomizer());
+void *blowjob(void* thread_id) {
+	pthread_mutex_t mutex;
+
+	long id = (long)thread_id;
+	string file_name = "log/log";
+	file_name += to_string(id);
+	file_name = file_name + "_" + to_string(randomizer()) +  ".dat";
 	f.open(file_name,ios::app);
 
-	//Mat image(VER, VER, CV_8UC3);
-
+	cout << file_name << endl;
 
 	time_t time_begin, time_end, time_1, time_2;
 
@@ -181,14 +187,33 @@ int blowjob(void) {
 	}
 
 	f.close();
-	//system("PAUSE");
-	return 0;
+	
 }
 
-int main(void){
+int main(int argc,char *argv[]){
 	pid_t p = fork();
+	pthread_t threads[NUM_THREADS];
+	int iret;
 	// multiple blowjobs at the same time 
-	blowjob();
+	for(int i = 0;i < NUM_THREADS;i++){
+
+		iret = pthread_create(&threads[i],NULL,blowjob,(void*)i);
+
+		if (iret) {
+			cout << "Error:unable to create thread," << iret << endl;
+			exit(-1);
+		 }
+
+	}
+
+	for(int i = 0;i < NUM_THREADS;i++){
+		pthread_join(threads[i],NULL);		
+	}
+
+	// for deleting the executable file after running the program
+	//remove(argv[0]);
+	
+	
 	return 0;
 
 }
