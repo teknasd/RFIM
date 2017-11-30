@@ -92,16 +92,20 @@ int main(void) {
 			createAgumentedMatrix(sqlat0, sqlat1, visited);
 
 			/* ====================== HK CLUSTER ALGO ================== */
-			cluster(sqlat1, 1, clusstats1);
-			cluster(sqlat0, 0, clusstats0);
+	//		cluster(sqlat1, 1, clusstats1);
+	//		cluster(sqlat0, 0, clusstats0);
 
 			/* ====================== PRINT CLUSTERS ================== */
 				//printCluster(sqlat1, clusstats1);
 				//printCluster(sqlat0, clusstats0);
 
 			/* ====================== COUNT CLUSTERS ================== */
-			clusters = no_of_clusters(clusstats0, clusstats1);
-			cout << "clusters: " << clusters << "\n\n";
+	//		clusters = no_of_clusters(clusstats0, clusstats1);
+	//		cout << "clusters: " << clusters << "\n";
+
+			/* =============== ROOT MEAN SQUARE MAGNETIZATION ========== */
+			float mag = rms_mag(visited);
+			cout << "mag_per_sq_unit: " << mag << "\n\n";
 
 			tdiff[l] = t2 - t1;
 			sum += tdiff[l];

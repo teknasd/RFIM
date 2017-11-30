@@ -1,7 +1,7 @@
 #include "Headers.h"
 #include "Parameters.h" // >> contains all the req parameters
 
-///*
+//*
 //*  A DFS based function to find all reachable vertices from s.
 //*/
 void dfs(std::vector <std::vector <int> >& F, long s, std::vector <int>& visited)
@@ -125,6 +125,7 @@ void printCluster(std::vector<std::vector<int> >& lat, std::vector <int>& clusst
 
 }
 
+// function to create agumented matrix around normal matrix to make it NPBC
 void createAgumentedMatrix(std::vector < std::vector <int> >& sqlat0, std::vector < std::vector <int> >& sqlat1, std::vector <int> & visited)
 {
 	int i = 0, j = 0;
@@ -157,6 +158,7 @@ void createAgumentedMatrix(std::vector < std::vector <int> >& sqlat0, std::vecto
 	}
 }
 
+//	function to cal no of clusters
 long no_of_clusters(std::vector <int>& clusstats0, std::vector <int>& clusstats1)
 {
 
@@ -172,4 +174,22 @@ long no_of_clusters(std::vector <int>& clusstats0, std::vector <int>& clusstats1
 	}
 
 	return counter;
+}
+
+
+// function to cal root mean square value of magnetization.
+float rms_mag(std::vector <int> & visited)
+{
+	long i = 0,sum=0;
+	float rmsmag;
+	for (i = 0; i < visited.size(); i++)
+	{
+		if (visited[i] == 1) { sum++; }
+		else { sum--; }
+	}
+	
+	//	m = sum(Si) / N;
+	rmsmag = float(sum) / float(visited.size()); 
+
+	return pow(rmsmag,2) ;
 }

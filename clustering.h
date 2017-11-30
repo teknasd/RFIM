@@ -11,7 +11,9 @@ void createAgumentedMatrix(std::vector < std::vector <int> >& sqlat0, std::vecto
 int gotoindex(std::vector <int>& A, int index);
 //
 void printCluster(std::vector<std::vector<int> >& lat, std::vector <int>& clusstats);
-//
 
+//
 long no_of_clusters(std::vector <int>& clusstats0, std::vector <int>& clusstats1);
 
+//
+float rms_mag(std::vector <int> & visited);
