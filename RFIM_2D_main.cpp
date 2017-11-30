@@ -16,9 +16,10 @@
 using namespace std;
 
 int main(void) {
-	//Mat image(VER, VER, CV_8UC3);
-
-
+	
+	// storing data into csv file
+	ofstream file("log_rfim_2D.csv");
+	file << "\niter,del,m=(mag/N)^2" << endl;
 	time_t time_begin, time_end, time_1, time_2;
 
 	long t1, t2, tdiff[iter] = { 0 }, l = 0, sum = 0, i, j, cap = 0, clusters = 0;
@@ -106,7 +107,9 @@ int main(void) {
 			/* =============== ROOT MEAN SQUARE MAGNETIZATION ========== */
 			float mag = rms_mag(visited);
 			cout << "mag_per_sq_unit: " << mag << "\n\n";
-
+			
+			//copying data to file
+			file << l << "," << float(del) / 10 << "," << mag << endl;
 			tdiff[l] = t2 - t1;
 			sum += tdiff[l];
 
@@ -142,18 +145,9 @@ int main(void) {
 			//close
 		}
 
-		//
-		//flow.erase(flow.begin(), flow.end());
-		//CapacityMat.erase(CapacityMat.begin(), CapacityMat.end());
-		//Exmat.erase(Exmat.begin(), Exmat.end());
-		//visited.erase(visited.begin(), visited.end());
-		//Wmat.erase(Wmat.begin(), Wmat.end());
-		//sqlat0.erase(sqlat0.begin(), sqlat0.end());
-		//sqlat1.erase(sqlat1.begin(), sqlat1.end());
-		//clusstats0.erase(clusstats0.begin(), clusstats0.end());
-		//clusstats1.erase(clusstats1.begin(), clusstats1.end());
-				flow.clear();
-				CapacityMat.clear();
+		// clear all 
+		flow.clear();
+		CapacityMat.clear();
 		Exmat.clear();
 		visited.clear();
 		Wmat.clear();
