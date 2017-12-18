@@ -18,8 +18,8 @@ using namespace std;
 int main(void) {
 	
 	// storing data into csv file
-	ofstream file("log_rfim_2D.csv");
-	file << "\niter,del,m=(mag/N)^2" << endl;
+	ofstream file("log_rfim_2D.csv",ios::app);
+	file  << endl;
 	time_t time_begin, time_end, time_1, time_2;
 
 	long t1, t2, tdiff[iter] = { 0 }, l = 0, sum = 0, i, j, cap = 0, clusters = 0;
@@ -109,7 +109,7 @@ int main(void) {
 			cout << "mag_per_sq_unit: " << mag << "\n\n";
 			
 			//copying data to file
-			file << l << "," << float(del) / 10 << "," << mag << endl;
+			file << mag << "," ;
 			tdiff[l] = t2 - t1;
 			sum += tdiff[l];
 
@@ -144,7 +144,7 @@ int main(void) {
 			}
 			//close
 		}
-
+		file << endl;
 		// clear all 
 		flow.clear();
 		CapacityMat.clear();
