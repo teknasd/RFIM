@@ -4,7 +4,7 @@
 
 void create_Bmat_bimodal(std::vector <int>& Bmat);
 
-void create_Bmat_gaussian(std::vector <int>& Bmat);
+void create_Bmat_gaussian(std::vector <int>& Bmat,int del);
 
 void create_Exmat(std::vector < std::vector <int> >& Exmat, std::vector <int> & latt);
 

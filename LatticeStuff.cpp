@@ -29,11 +29,11 @@ void create_Bmat_bimodal(std::vector <int>& Bmat)
 }
 
 // http://www.cplusplus.com/reference/random/normal_distribution/
-void create_Bmat_gaussian(std::vector <int>& Bmat)
+void create_Bmat_gaussian(std::vector <int>& Bmat,int del)
 {
 	double var = 0;
 	long i = 0,  count1 = 0, count2 = 0;
-	std::normal_distribution<double>  distr(0, 1);
+	std::normal_distribution<double>  distr(0, float(del)/10);
 	std::random_device  rand_dev;
 	std::mt19937        generator(rand_dev());
 	std::cout << "B mtrix ->" << tab;
