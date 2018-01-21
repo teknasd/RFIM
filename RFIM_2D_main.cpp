@@ -18,8 +18,8 @@ using namespace std;
 int main(void) {
 	
 	// storing data into csv file
-	ofstream file("log_rfim_2D.csv",ios::app);
-	file  << endl;
+	ofstream file("log_rfim_2D.csv");
+	file << "\niter,del,m=(mag/N)^2" << endl;
 	time_t time_begin, time_end, time_1, time_2;
 
 	long t1, t2, tdiff[iter] = { 0 }, l = 0, sum = 0, i, j, cap = 0, clusters = 0;
@@ -39,11 +39,6 @@ int main(void) {
 	/* ==================== INITIALISING 1D VECTORS ================*/
 		vector <int>  visited(V, 0), Wmat(N, 0), latt(N, 1), Bmat(N, 0), clusstats0(V / 2, 0), clusstats1(V / 2, 0);
 
-	/* =========================== BETA MATRIX (Bmat)======================= */
-	
-		//create_Bmat_bimodal(Bmat);  // UNCOMMENT FOR BIMODAL DISTRIBUTION
-		create_Bmat_gaussian(Bmat);
-		cout << "Bmat created" << endl;
 		
 	/* ====================== CREATING EXISTANCE MATRIX (Exmat)============= */
 
@@ -61,6 +56,14 @@ int main(void) {
 		{
 			//open 
 			cout << "\ndEL: " << float(del) / 10 << tab;
+
+
+			/* =========================== BETA MATRIX (Bmat)======================= */
+
+			//create_Bmat_bimodal(Bmat);  // UNCOMMENT FOR BIMODAL DISTRIBUTION
+			create_Bmat_gaussian(Bmat,del);
+			//cout << "Bmat created" << endl;
+
 
 			create_Wmat(Wmat, CapacityMat, Bmat, del);
 
@@ -109,7 +112,7 @@ int main(void) {
 			cout << "mag_per_sq_unit: " << mag << "\n\n";
 			
 			//copying data to file
-			file << mag << "," ;
+			file << "," << mag ;
 			tdiff[l] = t2 - t1;
 			sum += tdiff[l];
 
@@ -143,6 +146,7 @@ int main(void) {
 
 			}
 			//close
+			
 		}
 		file << endl;
 		// clear all 
