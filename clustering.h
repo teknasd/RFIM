@@ -2,7 +2,7 @@
 
 #include "Headers.h"
 
-void dfs(std::vector <std::vector <int> >& F, long s, std::vector <int>& visited);
+void dfs(std::vector <std::vector <float> >& F, long s, std::vector <int>& visited);
 //
 int cluster(std::vector<std::vector<int> >& lat, int key, std::vector <int>& clusstats);
 //

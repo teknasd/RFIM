@@ -2,28 +2,28 @@
 #include "Parameters.h" // >> contains all the req parameters
 
 
-void push(std::vector <std::vector <int> >const& C1, std::vector <std::vector <int> >& F1, std::vector <int>& excess1, int u, int v) {
+void push(std::vector <std::vector <float> >const& C1, std::vector <std::vector <float> >& F1, std::vector <float>& excess1, int u, int v) {
 	//std::cout << "\nin push\n";
-	int send = MIN(excess1[u], C1[u][v] - F1[u][v]);
+	float send = std::min(excess1[u], C1[u][v] - F1[u][v]);
 	F1[u][v] += send;
 	F1[v][u] -= send;
 	excess1[u] -= send;
 	excess1[v] += send;
 }
 
-void relabel(std::vector <std::vector <int> >const & C, std::vector <std::vector <int> >& F, std::vector <int>& height, int u) {
+void relabel(std::vector <std::vector <float> >const & C, std::vector <std::vector <float> >& F, std::vector <int>& height, int u) {
 	int v;
 	int min_height = INFINITE;
 	for (v = 0; v < V; v++) {
 		if (C[u][v] - F[u][v] > 0) {
-			min_height = MIN(min_height, height[v]);
+			min_height = std::min(min_height, height[v]);
 			height[u] = min_height + 1;
 		}
 	}
 }
 
 //void discharge(const int * const * C, int ** F, int *excess, int *height, int *seen, int u) {
-void discharge(std::vector <std::vector <int> >const & C, std::vector <std::vector <int> >& F, std::vector <int> & excess, std::vector <int> & height, std::vector <int>& seen, int u) {
+void discharge(std::vector <std::vector <float> >const & C, std::vector <std::vector <float> >& F, std::vector <float> & excess, std::vector <int> & height, std::vector <int>& seen, int u) {
 
 	//std::cout << "\nflag 2\n";
 	while (excess[u] > 0) {
@@ -53,9 +53,10 @@ void moveToFront(int i, std::vector <int>& A) {
 }
 
 //int pushRelabel(const int * const * C, int ** F, int source, int sink) {
-void pushRelabel(std::vector <std::vector <int> >const& C, std::vector <std::vector <int> >&  F, int source, int sink) {
+void pushRelabel(std::vector <std::vector <float> >const& C, std::vector <std::vector <float> >&  F, int source, int sink) {
 	//int *excess, *height, *list, *seen, i, p;
-	std::vector <int> excess(V, 0), height(V, 0), list(V - 2, 0), seen(V, 0);
+	std::vector <int>  height(V, 0), list(V - 2, 0), seen(V, 0);
+	std::vector <float> excess(V, 0);
 	int i, p;
 	//std::cout << "add in fn " << &C[100][70];
 	/*excess = new int[V];
@@ -97,7 +98,7 @@ void pushRelabel(std::vector <std::vector <int> >const& C, std::vector <std::vec
 		else
 			p += 1;
 	}
-	int maxflow = 0;
+	float maxflow = 0;
 	for (i = 0; i < V; i++)
 		maxflow += F[source][i];
 	std::cout << "maxflow: " << maxflow << tab;

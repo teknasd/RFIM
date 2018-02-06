@@ -4,7 +4,7 @@
 //*
 //*  A DFS based function to find all reachable vertices from s.
 //*/
-void dfs(std::vector <std::vector <int> >& F, long s, std::vector <int>& visited)
+void dfs(std::vector <std::vector <float> >& F, long s, std::vector <int>& visited)
 {
 	visited[s] = true;
 	for (long i = 0; i < V; i++)
@@ -182,14 +182,16 @@ float rms_mag(std::vector <int> & visited)
 {
 	long i = 0,sum=0;
 	float rmsmag;
-	for (i = 0; i < visited.size(); i++)
+	// i not eq to 0 because 0 is source
+	// i not eq to n because n is sink
+	for (i = 1; i < visited.size()-1; i++)
 	{
 		if (visited[i] == 1) { sum++; }
 		else { sum--; }
 	}
 	
 	//	m = sum(Si) / N;
-	rmsmag = float(sum) / float(visited.size()); 
+	rmsmag = float(sum) / float(V); 
 
 	return pow(rmsmag,2) ;
 }

@@ -20,7 +20,7 @@ int main(void) {
 	// storing data into csv file
 	ofstream file("log_rfim_2D.csv");
 	file << "\niter,del,m=(mag/N)^2" << endl;
-	time_t time_begin, time_end, time_1, time_2;
+	time_t time_begin=0, time_end=0, time_1=0, time_2=0;
 
 	long t1, t2, tdiff[iter] = { 0 }, l = 0, sum = 0, i, j, cap = 0, clusters = 0;
 	
@@ -30,15 +30,14 @@ int main(void) {
 			
 		
 	/* ==================== INITIALISING 2D VECTORS ================*/
-		vector < vector <int> >   flow(V, vector<int>(V, 0))
-								, CapacityMat(V, vector<int>(V, 0))
-								, Exmat(N, vector<int>(N, 0))
+		vector < vector <int> >   Exmat(N, vector<int>(N, 0))
 								, sqlat0(VER + 1, vector<int>(VER + 1, 0))
 								, sqlat1(VER + 1, vector<int>(VER + 1, 0));
-
+		vector < vector <float> >   flow(V, vector<float>(V, 0))
+								, CapacityMat(V, vector<float>(V, 0));
 	/* ==================== INITIALISING 1D VECTORS ================*/
-		vector <int>  visited(V, 0), Wmat(N, 0), latt(N, 1), Bmat(N, 0), clusstats0(V / 2, 0), clusstats1(V / 2, 0);
-
+		vector <int>  visited(V, 0), latt(N, 1), clusstats0(V / 2, 0), clusstats1(V / 2, 0);
+		vector<float>  Bmat(N, 0), Wmat(N, 0);
 		
 	/* ====================== CREATING EXISTANCE MATRIX (Exmat)============= */
 
@@ -52,18 +51,18 @@ int main(void) {
 
 	/* =================== LOOP TO ITERATE OVER RANGE OF DELTA ============= */
 
-		for (int del = del_beg; del <= del_end; del += del_inc)
+		for (float del = del_beg; del <= del_end; del += del_inc)
 		{
 			//open 
-			cout << "\ndEL: " << float(del) / 10 << tab;
-
-
+			cout << "\ndEL: " << del << tab;
+			
 			/* =========================== BETA MATRIX (Bmat)======================= */
 
-			//create_Bmat_bimodal(Bmat);  // UNCOMMENT FOR BIMODAL DISTRIBUTION
-			create_Bmat_gaussian(Bmat,del);
-			//cout << "Bmat created" << endl;
-
+			create_Bmat_bimodal(Bmat,del);  // UNCOMMENT FOR BIMODAL DISTRIBUTION
+			  //create_Bmat_gaussian(Bmat,del);	  // UNCOMMENT FOR GAUSSIAN DISTRIBUTION
+			  cout << "Bmat created" << endl;
+			  //printMatrix(Bmat, N);
+			  savedata(Bmat,l,del,"Phi");
 
 			create_Wmat(Wmat, CapacityMat, Bmat, del);
 
@@ -71,8 +70,8 @@ int main(void) {
 
 			create_Augumented_CapacityMat(Wmat, CapacityMat);
 
-			t1 = time(&time_1);  /* get current time;*/
-
+			t1 = long(time(&time_1));  /* get current time;*/
+			cout << "\ntic toc";
 			/*================================================================================================*/
 			/*  ladies and gentlemen its honour to present you the most important stuff in this awesome code  */
 			/* ===================== CALLING PUSH RELABEL(CapacityMat)======================================= */
@@ -80,7 +79,7 @@ int main(void) {
 			pushRelabel(CapacityMat, flow, 0, V - 1);
 
 			/*====================================================================================*/
-			t2 = time(&time_2);  /* get current time;*/
+			t2 = long(time(&time_2));  /* get current time;*/
 
 			/* ====================== CREATE RESIDUAL GRAPH ================== */
 			create_Residual_graph(CapacityMat, flow);
@@ -91,7 +90,8 @@ int main(void) {
 
 			/* ================= DEPTH FIRST SEARCH ON FLOW ================== */
 			dfs(flow, 0, visited);
-
+			savedata(visited, l, del, "Si");
+			//printMatrix(visited, V);
 			/* ============ CREATE AGUMENTED MATRIX AROUND LATTICE =========== */
 			createAgumentedMatrix(sqlat0, sqlat1, visited);
 

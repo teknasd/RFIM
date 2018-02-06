@@ -1,7 +1,7 @@
 #include "Headers.h"
 #include "Parameters.h" // >> contains all the req parameters
 
-void create_Bmat_bimodal(std::vector <int>& Bmat)
+void create_Bmat_bimodal(std::vector <float>& Bmat,float del)
 {
 	long i = 0, var = 0, count1 = 0, count2 = 0;
 	std::uniform_int_distribution<int>  distr(0, 1000);
@@ -14,12 +14,12 @@ void create_Bmat_bimodal(std::vector <int>& Bmat)
 		var = distr(generator);
 		if (var < 500)
 		{
-			Bmat[i] = w;
+			Bmat[i] = del;
 			count1++;
 		}
 		else
 		{
-			Bmat[i] = -w;
+			Bmat[i] = -del;
 			count2++;
 		}
 		//std::cout << Bmat[i] << d;
@@ -29,7 +29,7 @@ void create_Bmat_bimodal(std::vector <int>& Bmat)
 }
 
 // http://www.cplusplus.com/reference/random/normal_distribution/
-void create_Bmat_gaussian(std::vector <int>& Bmat,int del)
+void create_Bmat_gaussian(std::vector <float>& Bmat,float del)
 {
 	double var = 0;
 	long i = 0,  count1 = 0, count2 = 0;
@@ -77,7 +77,7 @@ void create_Exmat(std::vector < std::vector <int> >& Exmat, std::vector <int> & 
 }
 
 
-void create_CapacityMat(std::vector < std::vector <int> >& CapacityMat, std::vector < std::vector <int> >& Exmat)
+void create_CapacityMat(std::vector < std::vector <float> >& CapacityMat, std::vector < std::vector <int> >& Exmat)
 {
 	for (int i = 1; i <= N; i++)
 	{
@@ -86,7 +86,7 @@ void create_CapacityMat(std::vector < std::vector <int> >& CapacityMat, std::vec
 		{
 			if (i < j)
 			{
-				CapacityMat[i][j] = 4 * J * Exmat[i - 1][j - 1] * 10;
+				CapacityMat[i][j] = 4 * J * Exmat[i - 1][j - 1] ;
 
 			}
 			else
@@ -97,7 +97,7 @@ void create_CapacityMat(std::vector < std::vector <int> >& CapacityMat, std::vec
 }
 
 
-void create_Wmat(std::vector < int >& Wmat,std::vector < std::vector <int> >& CapacityMat, std::vector < int >& Bmat, int del )
+void create_Wmat(std::vector < float >& Wmat,std::vector < std::vector <float> >& CapacityMat, std::vector < float >& Bmat, float del )
 {
 	int i = 0, j = 0, cap = 0;
 	for (i = 1; i <= N; i++)
@@ -109,12 +109,12 @@ void create_Wmat(std::vector < int >& Wmat,std::vector < std::vector <int> >& Ca
 		}
 		Wmat[i - 1] = -2 * Bmat[i - 1] * del - cap / 2;
 		cap = 0;
-		//cout <<Wmat[i-1]<< endl;
+		//std::cout <<Wmat[i-1]<< std::endl;
 	}
 }
 
 // making reisdual graph by overwriting the flow mat,flow[i][j] = CapacityMat[i][j] - flow[i][j];
-void create_Augumented_CapacityMat(std::vector < int >& Wmat, std::vector < std::vector <int> >& CapacityMat)
+void create_Augumented_CapacityMat(std::vector < float >& Wmat, std::vector < std::vector <float> >& CapacityMat)
 {
 	int i = 0;
 	for (i = 1; i <= N; i++)
@@ -134,7 +134,7 @@ void create_Augumented_CapacityMat(std::vector < int >& Wmat, std::vector < std:
 	}
 }
 
-void create_Residual_graph(std::vector < std::vector <int> >& CapacityMat, std::vector < std::vector <int> >& flow)
+void create_Residual_graph(std::vector < std::vector <float> >& CapacityMat, std::vector < std::vector <float> >& flow)
 {
 	int i = 0, j = 0;
 	for (i = 0; i < V; i++)
@@ -152,7 +152,7 @@ void printMatrix(std::vector <std::vector <int> >  & M, int len) {
 	int i, j;
 	for (i = 0; i < len; i++) {
 		for (j = 0; j < len; j++)
-			std::cout << "\t" << M[i][j];
+			std::cout << "\t" << M[i][j]; 
 		std::cout << "\n";
 	}
 }
@@ -164,3 +164,53 @@ void printMatrix(std::vector<int>  & M, int len) {
 
 	}std::cout << "\n";
 }
+
+
+void savedata(std::vector< int > & Mat,int l,float del,std::string s)
+{
+	std::ofstream fobj(s+"-" + std::to_string(l) + "-" + std::to_string(del) + ".csv");
+	//fobj << "iteration : " << l << "\ndelta : " << del << std::endl;
+	int j;
+	Mat.erase(Mat.begin() + 1);
+	for (int i = 0; i < Mat.size(); i++)
+	{
+		std::cout << Mat[i];
+	}
+
+		for (int i = 0; i < N; i++)
+		{
+			if (i%VER == 0)	fobj << std::endl;
+			fobj << Mat[i]<<",";
+			
+		}
+	
+	
+	
+	fobj.clear();
+}
+
+
+
+
+
+void savedata(std::vector< float > & Mat, int l, float del, std::string s)
+{
+	std::ofstream fobj(s + "-" + std::to_string(l) + "-" + std::to_string(del) + ".csv");
+	//fobj << "iteration : " << l << "\ndelta : " << del << std::endl;
+	
+	
+		
+		for (int i = 0; i < N; i++)
+		{
+
+			if (i%VER == 0)	fobj << std::endl;
+			fobj << Mat[i] << ",";
+
+		}
+	
+
+	fobj.clear();
+}
+
+
+
