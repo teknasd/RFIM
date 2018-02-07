@@ -48,7 +48,8 @@ int main(void) {
 
 		create_CapacityMat(CapacityMat, Exmat);
 		cout << "created CapacityMatrix" << endl;
-
+	/* =====================CREATING BMAT ===================================*/
+		create_Bmat_bimodal(Bmat, 1);
 	/* =================== LOOP TO ITERATE OVER RANGE OF DELTA ============= */
 
 		for (float del = del_beg; del <= del_end; del += del_inc)
@@ -58,7 +59,7 @@ int main(void) {
 			
 			/* =========================== BETA MATRIX (Bmat)======================= */
 
-			create_Bmat_bimodal(Bmat,del);  // UNCOMMENT FOR BIMODAL DISTRIBUTION
+			update_Bmat_bimodal(Bmat,del);  // UNCOMMENT FOR BIMODAL DISTRIBUTION
 			  //create_Bmat_gaussian(Bmat,del);	  // UNCOMMENT FOR GAUSSIAN DISTRIBUTION
 			  cout << "Bmat created" << endl;
 			  //printMatrix(Bmat, N);

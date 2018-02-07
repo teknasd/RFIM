@@ -4,7 +4,7 @@
 void create_Bmat_bimodal(std::vector <float>& Bmat,float del)
 {
 	long i = 0, var = 0, count1 = 0, count2 = 0;
-	std::uniform_int_distribution<int>  distr(0, 1000);
+	std::uniform_int_distribution<int>  distr(0, 10000);
 	std::random_device  rand_dev;
 	std::mt19937        generator(rand_dev());
 	std::cout << "B mtrix ->" << tab;
@@ -12,7 +12,7 @@ void create_Bmat_bimodal(std::vector <float>& Bmat,float del)
 	{
 		//Bmat[i] = distr(generator);// floor(rand() / 1000);
 		var = distr(generator);
-		if (var < 500)
+		if (var < 5000)
 		{
 			Bmat[i] = del;
 			count1++;
@@ -28,6 +28,25 @@ void create_Bmat_bimodal(std::vector <float>& Bmat,float del)
 
 }
 
+//
+void update_Bmat_bimodal(std::vector <float>& Bmat, float del)
+{
+	for (int i = 0; i < N; i++)
+	{
+		
+		if (Bmat[i] > 0)
+		{
+			Bmat[i] = del;
+			
+		}
+		else
+		{
+			Bmat[i] = -del;
+			
+		}
+		//std::cout << Bmat[i] << d;
+	}
+}
 // http://www.cplusplus.com/reference/random/normal_distribution/
 void create_Bmat_gaussian(std::vector <float>& Bmat,float del)
 {
@@ -168,7 +187,8 @@ void printMatrix(std::vector<int>  & M, int len) {
 
 void savedata(std::vector< int > & Mat,int l,float del,std::string s)
 {
-	std::ofstream fobj(s+"-" + std::to_string(l) + "-" + std::to_string(del) + ".csv");
+	int delta = int(del * 10);
+	std::ofstream fobj(s+"-" + std::to_string(l) + "-" + std::to_string(delta) + ".csv");
 	//fobj << "iteration : " << l << "\ndelta : " << del << std::endl;
 	int j;
 	Mat.erase(Mat.begin() + 1);
@@ -179,7 +199,7 @@ void savedata(std::vector< int > & Mat,int l,float del,std::string s)
 
 		for (int i = 0; i < N; i++)
 		{
-			if (i%VER == 0)	fobj << std::endl;
+			if (i%VER == 0 && i)	fobj << std::endl;
 			fobj << Mat[i]<<",";
 			
 		}
@@ -195,7 +215,8 @@ void savedata(std::vector< int > & Mat,int l,float del,std::string s)
 
 void savedata(std::vector< float > & Mat, int l, float del, std::string s)
 {
-	std::ofstream fobj(s + "-" + std::to_string(l) + "-" + std::to_string(del) + ".csv");
+	int delta = int(del * 10);
+	std::ofstream fobj(s + "-" + std::to_string(l) + "-" + std::to_string(delta) + ".csv");
 	//fobj << "iteration : " << l << "\ndelta : " << del << std::endl;
 	
 	
@@ -203,7 +224,7 @@ void savedata(std::vector< float > & Mat, int l, float del, std::string s)
 		for (int i = 0; i < N; i++)
 		{
 
-			if (i%VER == 0)	fobj << std::endl;
+			if (i%VER == 0 && i)	fobj << std::endl;
 			fobj << Mat[i] << ",";
 
 		}
