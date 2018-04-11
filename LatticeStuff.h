@@ -4,6 +4,8 @@
 
 void create_Bmat_bimodal(std::vector <float>& Bmat,float del);
 
+void update_Bmat_bimodal(std::vector <float>& Bmat, float del);
+
 void create_Bmat_gaussian(std::vector <float>& Bmat, float del);
 
 void create_Exmat(std::vector < std::vector <int> >& Exmat, std::vector <int> & latt);
@@ -23,3 +25,4 @@ void printMatrix(std::vector<int> const & M, int len);
 void savedata(std::vector< int > & Mat, int l, float del, std::string s);
 
 void savedata(std::vector< float > & Mat, int l, float del, std::string s);
+

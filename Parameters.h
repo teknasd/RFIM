@@ -15,7 +15,7 @@
 
 //delta is multipling factor with Bmat
 #define del_beg     .7
-#define del_end     1.2
+#define del_end     1.5
 #define del_inc     .1
 
  
@@ -25,3 +25,4 @@
 
 // used in push relabel
 #define MIN(X,Y) ((X) < (Y) ? (X) : (Y))
+
