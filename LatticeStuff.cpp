@@ -10,7 +10,6 @@ void create_Bmat_bimodal(std::vector <float>& Bmat,float del)
 	std::cout << "B mtrix ->" << tab;
 	for (i = 0; i < N; i++)
 	{
-		//Bmat[i] = distr(generator);// floor(rand() / 1000);
 		var = distr(generator);
 		if (var < 5000)
 		{
@@ -50,9 +49,9 @@ void update_Bmat_bimodal(std::vector <float>& Bmat, float del)
 // http://www.cplusplus.com/reference/random/normal_distribution/
 void create_Bmat_gaussian(std::vector <float>& Bmat,float del)
 {
-	double var = 0;
+	float var = 0;
 	long i = 0,  count1 = 0, count2 = 0;
-	std::normal_distribution<double>  distr(0, float(del)/10);
+	std::normal_distribution<float>  distr(0, float(del)/10);
 	std::random_device  rand_dev;
 	std::mt19937        generator(rand_dev());
 	std::cout << "B mtrix ->" << tab;
@@ -77,19 +76,19 @@ void create_Bmat_gaussian(std::vector <float>& Bmat,float del)
 
 }
 
-void create_Exmat(std::vector < std::vector <int> >& Exmat, std::vector <int> & latt)
+void create_Exmat(std::vector < std::vector <int> >& Exmat)
 {
 	int i = 0;
 	for (i = 0; i < N; i++)
 	{
 		if (((i + 1) % VER != 0))
 		{
-			Exmat[i][i + 1] = 1 * latt[i] * latt[i + 1];
+			Exmat[i][i + 1] = 1;
 			//cout << Exmat[i][i + 1];
 		}
 		if (i + VER < N)
 		{
-			Exmat[i][i + VER] = 1 * latt[i] * latt[i + VER];
+			Exmat[i][i + VER] = 1 ;
 		}
 		//else 
 	}
@@ -105,7 +104,7 @@ void create_CapacityMat(std::vector < std::vector <float> >& CapacityMat, std::v
 		{
 			if (i < j)
 			{
-				CapacityMat[i][j] = 4 * J * Exmat[i - 1][j - 1] ;
+				CapacityMat[i][j] = 4 * J * float(Exmat[i - 1][j - 1]) ;
 
 			}
 			else
@@ -118,7 +117,8 @@ void create_CapacityMat(std::vector < std::vector <float> >& CapacityMat, std::v
 
 void create_Wmat(std::vector < float >& Wmat,std::vector < std::vector <float> >& CapacityMat, std::vector < float >& Bmat, float del )
 {
-	int i = 0, j = 0, cap = 0;
+	int i = 0, j = 0;
+	float cap = 0;
 	for (i = 1; i <= N; i++)
 	{
 		for (j = 1; j <= N; j++)
@@ -176,6 +176,15 @@ void printMatrix(std::vector <std::vector <int> >  & M, int len) {
 	}
 }
 
+void printMatrix(std::vector <std::vector <float> >  & M, int len) {
+	int i, j;
+	for (i = 0; i < len; i++) {
+		for (j = 0; j < len; j++)
+			std::cout << "\t" << M[i][j];
+		std::cout << "\n";
+	}
+}
+
 void printMatrix(std::vector<int>  & M, int len) {
 	int i;
 	for (i = 0; i < len; i++) {
@@ -190,22 +199,37 @@ void savedata(std::vector< int > & Mat,int l,float del,std::string s)
 	int delta = int(del * 10);
 	std::ofstream fobj(s+"-" + std::to_string(l) + "-" + std::to_string(delta) + ".csv");
 	//fobj << "iteration : " << l << "\ndelta : " << del << std::endl;
-	int j;
+
 	Mat.erase(Mat.begin() + 1);
-	for (int i = 0; i < Mat.size(); i++)
+
+	for (int i = 0; i < N; i++)
 	{
-		std::cout << Mat[i];
+		if (i%VER == 0 && i)	fobj << std::endl;
+		fobj << Mat[i] << ",";
+
 	}
 
-		for (int i = 0; i < N; i++)
+
+
+	fobj.clear();
+}
+
+void savedata(std::vector< std::vector< float > > & Mat, int l, float del, std::string s)
+{
+	int delta = int(del * 10);
+	std::ofstream fobj(s + "-" + std::to_string(l) + "-" + std::to_string(delta) + ".txt");
+	//fobj << "iteration : " << l << "\ndelta : " << del << std::endl;
+	for (int i = 0; i < Mat.size(); i++)
+	{
+		for (int j = 0; j < Mat[i].size(); j++)
 		{
-			if (i%VER == 0 && i)	fobj << std::endl;
-			fobj << Mat[i]<<",";
-			
+			if (Mat[i][j] != 0)
+			{
+				fobj <<i<<" "<<j<<" "<< Mat[i][j]<<" \n";
+			}
 		}
-	
-	
-	
+		
+	}
 	fobj.clear();
 }
 
@@ -233,5 +257,65 @@ void savedata(std::vector< float > & Mat, int l, float del, std::string s)
 	fobj.clear();
 }
 
+// this func re- intializes all the matrices with zero.
+void Reinit(std::vector < std::vector <int> >&   sqlat0, 
+			std::vector < std::vector <int> >& sqlat1,
+			std::vector < std::vector <float> >&   flow,
+			std::vector < std::vector<float> >& CapacityMat,
+			std::vector <int>&  visited,
+			std::vector <int>&  clusstats0,
+			std::vector <int>&  clusstats1,
+			std::vector<float>& Wmat)
+{
+	int i, j;
+	for (i = 0; i < V; i++)
+	{
+		for (j = 0; j < V; j++)
+		{
+
+			if (i < VER + 1 && j < VER + 1)
+			{
+
+				sqlat0[i][j] = 0;
+				sqlat1[i][j] = 0;
+			}
 
 
+			flow[i][j] = 0;
+		}
+		if (i < V / 2)
+		{
+
+			clusstats0[i] = 0;
+			clusstats1[i] = 0;
+		}
+		if (i < N)
+		{
+
+			Wmat[i] = 0;
+		}visited[i] = 0;
+
+	}
+}
+
+// this func clears all matrices
+void ClearAll(std::vector < std::vector <int> >&  sqlat0,
+	std::vector < std::vector <int> >& sqlat1,
+	std::vector < std::vector <float> >&   flow,
+	std::vector < std::vector<float> >& CapacityMat,
+	std::vector <int>&  visited,
+	std::vector <int>&  clusstats0,
+	std::vector <int>&  clusstats1,
+	std::vector<float>& Wmat)
+{
+
+	flow.clear();
+	CapacityMat.clear();
+	visited.clear();
+	Wmat.clear();
+	sqlat0.clear();
+	sqlat1.clear();
+	clusstats0.clear();
+	clusstats1.clear();
+
+}
