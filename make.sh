@@ -1,5 +1,5 @@
 
-g++ --std=c++14 -Wall LatticeStuff.cpp clustering.cpp RFIM_2D_main.cpp PushRelabel.cpp -o app
+g++ --std=c++14 -Ofast -lm -funroll-loops -msse4 -Wall LatticeStuff.cpp clustering.cpp RFIM_2D_main.cpp PushRelabel.cpp -o app
 
 ./app
 
@@ -9,6 +9,5 @@ g++ --std=c++14 -Wall LatticeStuff.cpp clustering.cpp RFIM_2D_main.cpp PushRelab
 #if [! -d log];then
 #mkdir log
 #fi
-
 
 
