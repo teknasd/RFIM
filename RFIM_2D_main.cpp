@@ -9,7 +9,7 @@
 
 #include "Headers.h"
 #include "Parameters.h"
-#include "Clustering.h"
+#include "clustering.h"
 #include "PushRelabel.h"
 #include "LatticeStuff.h"
 //nclude "MPMalgo.h"
