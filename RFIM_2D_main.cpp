@@ -31,7 +31,7 @@ int main(void) {
 			
 		
 	/* ==================== INITIALISING 2D VECTORS ================*/
-		std::unordered_map<int, std::unordered_map<int, std::unordered_map<std::string, float>>> network;
+		//std::unordered_map<int, std::unordered_map<int, std::unordered_map<std::string, float>>> network;
 		vector < vector <int> >   Exmat(N, vector<int>(N, 0))
 								, sqlat0(VER + 1, vector<int>(VER + 1, 0))
 								, sqlat1(VER + 1, vector<int>(VER + 1, 0));
