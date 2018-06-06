@@ -11,7 +11,8 @@ edit the parameters (lattice size, no of configurations, range of delta's) in pa
 
 
 ### Here's GIF of the clusters of size 40 x 40.
-(this result is produced openCV)
+(this result is produced using openCV)
+
 ![ScreenShot](/clusters-40X40.gif)
 
 
